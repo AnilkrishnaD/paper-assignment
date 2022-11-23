@@ -1,0 +1,23 @@
+.popup_image {
+  height: 400px;
+  width: 700px;
+  border: 2px solid #555555;
+}
+
+.closeButton {
+  color: white;
+  margin-left: 500px;
+}
+
+.popup-container {
+  margin-left: 800px;
+  margin-top: 280px;
+}
+
+.button {
+  margin: 10px;
+}
+
+.result-container {
+  display: flex;
+}
