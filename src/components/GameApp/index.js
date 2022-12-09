@@ -35,18 +35,52 @@ const choicesList = [
 ]
 
 class GameApp extends Component {
-  state = {score: 0, gameStatus: 'Initial', userInput: ''}
+  state = {score: 0, gameStatus: 'Initial', userInput: '', gameResult: ''}
+
+  getGameResult = userInput => {
+    const opponentChoice = this.generateRandomNumber()
+    console.log(opponentChoice)
+    const opponentWeapon = choicesList[opponentChoice].id
+    const opponentUrl = choicesList[opponentChoice].imageUrl
+    // console.log(opponentUrl)
+
+    const gameResult = this.findingGameResults(userInput, opponentWeapon)
+    // console.log(gameResult)
+    if (gameResult === 'YOU WON') {
+      this.setState(prevState => ({
+        score: prevState.score + 1,
+        gameResult: 'YOU WON',
+        gameStatus: 'Result',
+      }))
+    }
+    if (gameResult === 'YOU LOSE') {
+      this.setState(prevState => ({
+        score: prevState.score - 1,
+        gameResult: 'YOU LOSE',
+        gameStatus: 'Result',
+      }))
+    }
+    if (gameResult === 'IT IS DRAW') {
+      this.setState({gameResult: 'IT IS DRAW', gameStatus: 'Result'})
+    }
+  }
 
   onClickRock = () => {
-    this.setState({userInput: 'ROCK', gameStatus: 'Result'})
+    // this.setState({userInput: 'ROCK', gameStatus: 'Result'})
+    const userInput = 'ROCK'
+    this.getGameResult(userInput)
   }
 
   onClickScissors = () => {
-    this.setState({userInput: 'SCISSORS', gameStatus: 'Result'})
+    // this.setState({userInput: 'SCISSORS', gameStatus: 'Result'})
+    const userInput = 'SCISSORS'
+    this.getGameResult(userInput)
   }
 
   onClickPaper = () => {
-    this.setState({userInput: 'PAPER', gameStatus: 'Result'})
+    // this.setState({userInput: 'PAPER', gameStatus: 'Result'})
+    const userInput = 'PAPER'
+    this.getGameResult(userInput)
   }
 
   renderPlayingView = () => (
@@ -54,6 +88,7 @@ class GameApp extends Component {
       <button
         type="button"
         data-testid="rockButton"
+        testid="rockButton"
         onClick={this.onClickRock}
         className="button"
       >
@@ -66,6 +101,7 @@ class GameApp extends Component {
       <button
         type="button"
         data-testid="scissorsButton"
+        testid="scissorsButton"
         onClick={this.onClickScissors}
         className="button"
       >
@@ -78,6 +114,7 @@ class GameApp extends Component {
       <button
         type="button"
         data-testid="paperButton"
+        testid="paperButton"
         onClick={this.onClickPaper}
         className="button"
       >
@@ -114,33 +151,20 @@ class GameApp extends Component {
     } else {
       result = 'YOU LOSE'
     }
+    // console.log(userInput)
 
     return result
   }
 
   renderResultView = () => {
-    const {userInput} = this.state
+    // console.log('results')
+    const {userInput, gameResult} = this.state
     const userInputData = choicesList.filter(
       eachItem => eachItem.id === userInput,
     )
     const userImageUrl = userInputData[0].imageUrl
-    console.log(userImageUrl)
+
     // const userInputUrl = userInputData.imageUrl
-
-    const opponentChoice = this.generateRandomNumber()
-    const opponentWeapon = choicesList[opponentChoice].id
-    const opponentUrl = choicesList[opponentChoice].imageUrl
-    // console.log(opponentUrl)
-
-    const gameResult = this.findingGameResults(userInput, opponentWeapon)
-    console.log(gameResult)
-    const {score} = this.state
-    console.log(score)
-    if (gameResult === 'YOU WON') {
-      this.setState(prevState => ({score: prevState.score + 1}))
-    } else if (gameResult === 'YOU LOSE') {
-      this.setState(prevState => ({score: prevState.score - 1}))
-    }
 
     return (
       <>
@@ -152,17 +176,18 @@ class GameApp extends Component {
           <div>
             <h1>OPPONENT</h1>
             <img
-              src={opponentUrl}
+              src="https://assets.ccbp.in/frontend/react-js/rock-paper-scissor/scissor-image.png"
               alt="opponent choice"
               className="item-image"
             />
           </div>
         </div>
-        <h1>{gameResult}</h1>
+        <p>{gameResult}</p>
         <button type="button" onClick={this.onRestartGame}>
           PLAY AGAIN
         </button>
       </>
+      // <p>Ok</p>
     )
   }
 
@@ -206,7 +231,8 @@ class GameApp extends Component {
 
   render() {
     const {score, userInput} = this.state
-    console.log(userInput)
+    // console.log(userInput)
+    console.log(score)
 
     return (
       <AppContainer>
